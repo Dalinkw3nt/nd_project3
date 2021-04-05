@@ -401,17 +401,21 @@ jobs:
       - run:
           name: Build the frontend
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:stack-name,Values=udapeople-test-backend-*' --output text)
+            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:stack-name,Values=udapeople-test-backend-*' --output text)
             echo "Adding public DNS of EC2 to inventory"
             echo $BACKEND_IP > .circleci/ansible/inventory.txt
             echo ENVIRONMENT=production >> frontend/.env
             echo NODE_ENV=production >> frontend/.env
             export API_URL=$(http://${BACKEND_IP}:3030)
-            echo "APR_URL=$API_URL" >> frontend/.env
+            echo "APR_URL=$API_URL" > frontend/.env
             echo "${API_URL}"
             cd frontend
             npm install 
             npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            frontend
       - run: 
           name: Copy built frontend files to the S3 bucket
           command: |
@@ -433,25 +437,18 @@ jobs:
             apk add --no-cache openssh-client
             pip3 install awscli
       - run:
-          name: Get backend url
-          command: |
-            # your code here
-            export BACKEND_URL=$(sed -n 2p .circleci/ansible/inventory.txt)
-      - run:
           name: Backend smoke test.
           command: |
-            BACKEND_URL=$(aws ec2 describe-instances \
-            --filters "Name=tag:stack-name,Values=udapeople-test-backend-${CIRCLE_WORKFLOW_ID}" \
-            --query 'Reservations[*].Instances[*].PublicDnsName' \
-            --output text)
-            curl http://${BACKEND_URL}:3030/api/status
+            BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=test-backend-${CIRCLE_WORKFLOW_ID}" --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
+            echo "${BACKEND_IP}"
+            curl "http://${BACKEND_IP}:3030/api/status"
 
 
       - run:
           name: Smoke test on frontend
           command: |
             URL="http://udapeople-test-s3bucket-${CIRCLE_WORKFLOW_ID}.s3-website.us-east-1.amazonaws.com/index.html"
-            echo ${URL}
+            echo "${URL}"
             if 
               curl -s ${URL} | grep -q "Welcome"
             then
