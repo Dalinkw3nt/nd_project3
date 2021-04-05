@@ -408,6 +408,8 @@ jobs:
             API_URL=$(http://${BACKEND_IP}:3030)
             echo APR_URL=${API_URL} >> frontend/.env
             echo ${API_URL}
+            cat frontend/.env
+            cat .circleci/ansible/inventory.txt
             cd frontend
             npm install 
             npm run build
