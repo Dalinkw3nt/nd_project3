@@ -406,10 +406,8 @@ jobs:
             echo ENVIRONMENT=production >> frontend/.env
             echo NODE_ENV=production >> frontend/.env
             API_URL=$(http://${BACKEND_IP}:3030)
-            echo APR_URL=${API_URL} >> frontend/.env
             echo ${API_URL}
-            cat frontend/.env
-            cat .circleci/ansible/inventory.txt
+            echo APR_URL=${API_URL} >> frontend/.env
             cd frontend
             npm install 
             npm run build
