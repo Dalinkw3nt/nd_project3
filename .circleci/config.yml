@@ -35,24 +35,6 @@ commands:
             fi
           when: on_fail
 
-  write-env-variables:
-          description: Writes environment variables to env file
-          steps:
-              - run:
-                  name: Write to .env file
-                  command: |
-                      ls -la
-                      echo ENVIROMENT=development > "backend/.env"
-                      echo TYPEORM_CONNECTION=postgres >> "backend/.env"
-                      echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
-                      echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
-                      echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
-                      echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
-                      echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
-                      echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
-                      echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
-                      echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
-
   revert-migration:
     description: Revert the latest migration
     parameters:
@@ -261,6 +243,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install tar
+          command: |
+            yum -y install tar gzip
+      - run:
           name: Delete all S3 buckets whose names start with 'udapeople-test-s3bucket-'
           command: |
             OLD_BUCKET=$(aws s3api list-buckets --query "Buckets[?starts_with(Name, 'udapeople-test-s3bucket-')].Name" --output text)
@@ -295,7 +281,28 @@ jobs:
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Name,Values=test-backend-*' --output text >> .circleci/ansible/inventory.txt
             curl -H "Content-Type: text/plain" -H "token: f3b8cd2f-30f9-4cf2-bfe6-0bf40a948839" --request PUT --data "${PUBLIC_DNS}" https://api.memstash.io/values/public_dns
       
+      - run:
+          name: Add .env vars to backend distro
+          command: |
+            echo ENVIRONMENT=development > backend/.env
+            echo TYPEORM_CONNECTION=postgres >> backend/.env
+            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> backend/.env
+            echo TYPEORM_HOST=$TYPEORM_HOST >> backend/.env
+            echo TYPEORM_PORT=$TYPEORM_PORT >> backend/.env
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> backend/.env
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> backend/.env
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> backend/.env
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
+            echo NODE_ENV=development >> "backend/.env"
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .circleci/ansible/inventory.txt
+            - backend/.env
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:17}
 
   run-migrations:
     executor: node
