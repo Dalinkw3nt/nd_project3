@@ -393,7 +393,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: << pipeline.parameters.py_alp_image >>
     steps:
       - checkout
       - attach_workspace:
@@ -401,9 +401,9 @@ jobs:
       - run:
           name: Install system dependencies
           command: |
-            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
-            yum -y install nodejs
             yum -y install tar gzip
+            apk add --update tar gzip ansible nodejs npm curl && \
+            pip install awscli
       - run:
           name: Build the frontend
           working_directory: ./frontend
