@@ -400,9 +400,6 @@ jobs:
           command: |
             BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Name,Values=test-backend-*' --output text)
             echo "Adding public DNS of EC2 to inventory"
-            touch frontend/.env
-            echo ENVIRONMENT=production >> frontend/.env
-            echo NODE_ENV=production >> frontend/.env
             API_URL=$(http://${BACKEND_IP}:3030)
             echo ${API_URL}
             npm install 
