@@ -405,8 +405,6 @@ jobs:
             echo NODE_ENV=production >> frontend/.env
             API_URL=$(http://${BACKEND_IP}:3030)
             echo ${API_URL}
-            echo APR_URL=${API_URL} >> frontend/.env
-            cd frontend
             npm install 
             npm run build
       - persist_to_workspace:
