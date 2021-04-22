@@ -301,8 +301,6 @@ jobs:
           paths:
             - .circleci/ansible/inventory.txt
             - backend/.env
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:17}
 
   run-migrations:
     executor: node
