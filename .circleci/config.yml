@@ -401,7 +401,6 @@ jobs:
       - run:
           name: Install system dependencies
           command: |
-            yum -y install tar gzip
             apk add --update tar gzip ansible nodejs npm curl && \
             pip install awscli
       - run:
