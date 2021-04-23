@@ -404,7 +404,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: << pipeline.parameters.py_alp_image >>
+      - image: amazon/aws-cli
     steps:
       - checkout
       - attach_workspace:
@@ -412,8 +412,10 @@ jobs:
       - run:
           name: Install system dependencies
           command: |
-            apk add --update tar gzip ansible nodejs npm curl && \
-            pip install awscli
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            yum -y install nodejs
+            yum -y install tar gzip
+            
       - run:
           name: Build the frontend
           no_output_timeout: 30m
@@ -423,21 +425,18 @@ jobs:
             echo "Adding public DNS of EC2 to inventory"
             API_URL=$(http://${BACKEND_IP}:3030)
             echo ${API_URL}
+            cd frontend
             npm install 
             npm run build
-            
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+            aws s3 cp ./frontend/dist s3://udapeople-test-s3bucket-${CIRCLE_WORKFLOW_ID}/ --recursive
+
       - persist_to_workspace:
           root: .circleci/ansible
           paths:
             - inventory.txt
-      - run: 
-          name: Copy built frontend files to the S3 bucket
-          command: |
-            cat frontend/.env
-            cd frontend
-            ls -la
-            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-            aws s3 cp ./frontend/dist s3://udapeople-test-s3bucket-${CIRCLE_WORKFLOW_ID}/ --recursive
+ 
+            
       - destroy-aws-resource
 
 
