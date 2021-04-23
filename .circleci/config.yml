@@ -407,6 +407,10 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run:
+          name: Install tar
+          command: |
+            yum -y install tar gzip
       - attach_workspace:
           at: .
       - run:
@@ -414,8 +418,7 @@ jobs:
           command: |
             curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
             yum -y install nodejs
-            yum -y install tar gzip
-            
+     
       - run:
           name: Build the frontend
           no_output_timeout: 30m
