@@ -470,7 +470,7 @@ jobs:
           command: |
             BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=test-backend-*" --output text)
             echo "${BACKEND_IP}"
-            EC2_API_URL = "https://${BACKEND_IP}:3030/api/status"
+            export EC2_API_URL = "https://${BACKEND_IP}:3030/api/status"
             echo ${EC2_API_URL}
             curl ${EC2_API_URL}
             if curl -s ${EC2_API_URL} | grep "ok"
