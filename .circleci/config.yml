@@ -468,9 +468,16 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=test-backend-${CIRCLE_WORKFLOW_ID}" --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
+            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=test-backend-*" --output text)
             echo "${BACKEND_IP}"
-            curl "http://${BACKEND_IP}:3030/api/status"
+            EC2_API_URL = "https://${BACKEND_IP}:3030/api/status"
+            echo ${EC2_API_URL}
+            if curl -s ${EC2_API_URL} | grep "ok"
+            then
+              exit 0
+            else
+              exit 1
+            fi    
 
 
       - run:
