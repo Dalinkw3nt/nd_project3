@@ -425,7 +425,6 @@ jobs:
       - run:
           name: Build the frontend
           no_output_timeout: 30m
-          working_directory: ./frontend
           command: |
             BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:Name,Values=test-backend-*' --output text)
             echo "Adding public DNS of EC2 to inventory"
