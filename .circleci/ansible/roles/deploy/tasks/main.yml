@@ -1,25 +1,25 @@
-# ---
-# - name: "install dependencies."
-#   become: true
-#   apt:
-#     name: ["nodejs", "npm", "tar"]
-#     global: yes
-#     production: yes
-#     state: latest
-#     update_cache: yes
+---
+- name: "install dependencies."
+  become: true
+  apt:
+    name: ["nodejs", "npm", "tar"]
+    global: yes
+    production: yes
+    state: latest
+    update_cache: yes
 
-# - name: "install pm2"
-#   become: true
-#   npm:
-#     name: pm2
-#     global: yes
-#     production: yes
-#     state: present
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
 
-# - name: "Make backend dir"
-#   file:
-#     path: /home/ubuntu/backend
-#     state: directory
+- name: "Make backend dir"
+  file:
+    path: /home/ubuntu/backend
+    state: directory
 
 - name: "Copy dist files"
   become: true
