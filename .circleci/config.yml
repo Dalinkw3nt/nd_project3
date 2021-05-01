@@ -466,14 +466,13 @@ jobs:
             apk add --no-cache openssh-client
             pip3 install awscli
       - run:
+          name: Get backend url
+          command: |
+            export BACKEND_URL=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=test-backend-*" --output text)
+      - run:
           name: Backend smoke test.
           command: |
-            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=test-backend-*" --output text)
-            echo "${BACKEND_IP}"
-            export API_URL = "http://${BACKEND_IP}:3030/api/status"
-            echo ${API_URL}
-            curl ${API_URL}
-            if curl -s ${API_URL} | grep "ok"
+            if curl -s https://${BACKEND_URL}:3030/api/status | grep "ok"
             then
               exit 0
             else
