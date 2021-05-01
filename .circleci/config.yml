@@ -375,7 +375,7 @@ jobs:
             cat ./inventory.txt
 
       - add_ssh_keys:
-          fingerprints: ["ac:fe:7b:2f:0f:c5:66:5f:1d:01:4c:ef:20:17:4a:04"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
+          fingerprints: ["f2:e7:96:70:ce:5d:29:68:ec:2d:1d:33:71:52:8b:05"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
       - run:
           name: Configure server via ansible to deploy the backend
           command: |
@@ -504,8 +504,8 @@ jobs:
               return 1
             fi
 
-      - revert-migration
-      - destroy-aws-resource
+      # - revert-migration
+      # - destroy-aws-resource
 
   cloudfront-update:
     docker:
