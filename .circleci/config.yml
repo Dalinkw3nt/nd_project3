@@ -435,7 +435,7 @@ jobs:
             # echo ${API_URL}
             # echo ENVIRONMENT=production > "frontend/.env"
             # echo NODE_ENV=production >> "frontend/.env"
-            echo API_URL=$API_URL >> "frontend/.env"
+            echo API_URL=$API_URL >> ".env"
             echo ${API_URL}
             # cd frontend
             npm install 
