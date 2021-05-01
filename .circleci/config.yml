@@ -377,6 +377,11 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["77:6c:b6:c6:ed:54:e3:7c:9f:65:22:41:6f:34:21:31"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
       - run:
+          name: prevent checking environment
+          command: |
+            export ANSIBLE_HOST_KEY_CHECKING=False
+      
+      - run:
           name: Configure server via ansible to deploy the backend
           command: |
             printenv >> ./backend/.env
