@@ -372,7 +372,7 @@ jobs:
             cd .circleci/ansible/
             echo "[all]" > ./inventory.txt
             echo ${PUBLIC_DNS} > ./inventory.txt
-            cat ./inventory.txt
+            cat .circleci/ansible/inventory.txt
 
       - add_ssh_keys:
           fingerprints: ["77:6c:b6:c6:ed:54:e3:7c:9f:65:22:41:6f:34:21:31"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
