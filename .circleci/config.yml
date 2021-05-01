@@ -426,6 +426,8 @@ jobs:
      
       - run:
           name: Build the frontend
+      - add_ssh_keys:
+          fingerprints: ["f2:e7:96:70:ce:5d:29:68:ec:2d:1d:33:71:52:8b:05"]
           no_output_timeout: 30m
           working_directory: ./frontend
           command: |
@@ -443,7 +445,8 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp ./dist s3://udapeople-test-s3bucket-${CIRCLE_WORKFLOW_ID}/ --recursive
-
+      - add_ssh_keys:
+          fingerprints: ["f2:e7:96:70:ce:5d:29:68:ec:2d:1d:33:71:52:8b:05"]
       - persist_to_workspace:
           root: .
             - .circleci/ansible/inventory.txt
