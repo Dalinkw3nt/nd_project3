@@ -435,7 +435,7 @@ jobs:
             # echo ${API_URL}
             # echo ENVIRONMENT=production > "frontend/.env"
             # echo NODE_ENV=production >> "frontend/.env"
-            # echo API_URL=$API_URL >> "frontend/.env"
+            echo API_URL=$API_URL >> "frontend/.env"
             echo ${API_URL}
             # cd frontend
             npm install 
@@ -454,7 +454,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: << pipeline.parameters.py_alp_image >>
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
@@ -465,10 +465,18 @@ jobs:
             apk add --no-cache --update ansible
             apk add --no-cache openssh-client
             pip3 install awscli
+      -run: 
+        name: Get backend URL. 
+        command: |
+          PUBLIC_DNS=$(aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=test-backend-${CIRCLE_WORKFLOW_ID}" --query 'Reservations[*].Instances[*].PublicDnsName' --output text)
+          echo ${PUBLIC_DNS}
+          curl -s http://{PUBLIC_DNS}:3030/api/status
       - run:
-          name: Get backend url
+          name: Get backend IPAddress
           command: |
             export BACKEND_URL=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=test-backend-*" --output text)
+            echo ${BACKEND_URL}
       - run:
           name: Backend smoke test.
           command: |
