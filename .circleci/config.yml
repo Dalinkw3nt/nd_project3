@@ -471,7 +471,7 @@ jobs:
             PUBLIC_DNS=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=test-backend-${CIRCLE_WORKFLOW_ID}" --query 'Reservations[*].Instances[*].PublicDnsName' --output text)
             echo ${PUBLIC_DNS}
-            curl -s http://{PUBLIC_DNS}:3030/api/status
+
       - run:
           name: Get backend IPAddress
           command: |
