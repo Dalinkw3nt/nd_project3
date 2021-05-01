@@ -454,7 +454,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: amazon/aws-cli
+      - image: << pipeline.parameters.py_alp_image >>
     steps:
       - checkout
       - run:
