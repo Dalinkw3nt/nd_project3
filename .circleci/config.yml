@@ -217,6 +217,7 @@ jobs:
             
       - run:
           name: Test the code
+          no_output_timeout: 30m
           working_directory: ./frontend
           command: |
             sudo npm install -g jest
