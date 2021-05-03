@@ -5,10 +5,11 @@
     sudo mkdir /home/ubuntu/backend
     
 
+
 - name: "install all dependencies."
   become: true
-  shell: |
-    cd /home/ubuntu/backend
+  args:
+    chdir: /home/ubuntu/backend
   apt:
     name: ["nodejs", "npm", "tar"]
     state: latest
