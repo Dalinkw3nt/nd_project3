@@ -1,5 +1,5 @@
 ---
-- name: "install dependencies."
+- name: "install all dependencies."
   become: true
   apt:
     name: ["nodejs", "npm", "tar"]

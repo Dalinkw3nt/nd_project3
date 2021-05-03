@@ -393,6 +393,10 @@ jobs:
             apk add --update ansible
             ansible --version
       - run:
+          name: Install tar
+          command: |
+            yum -y install tar gzip
+      - run:
           name: Configure server
           working_directory: .circleci/ansible
           command: |
