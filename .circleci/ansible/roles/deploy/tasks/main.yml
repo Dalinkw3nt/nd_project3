@@ -6,7 +6,7 @@
     path: /home/ubuntu/backend/
     state: directory
     mode: "0755"
-    recursive: yes
+    recurse: yes
     
     
 - name: "install all dependencies."
