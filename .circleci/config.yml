@@ -40,7 +40,7 @@ commands:
     parameters:
     steps:
       - add_ssh_keys:
-          fingerprints: ["77:6c:b6:c6:ed:54:e3:7c:9f:65:22:41:6f:34:21:31"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
+          fingerprints: ["68:70:63:24:b5:73:cf:93:6b:ae:8f:36:87:5e:bc:9c"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
       - run:
           name: Revert the last migration
           working_directory: ./backend
@@ -375,7 +375,7 @@ jobs:
             cat ./inventory.txt
 
       - add_ssh_keys:
-          fingerprints: ["77:6c:b6:c6:ed:54:e3:7c:9f:65:22:41:6f:34:21:31"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
+          fingerprints: ["68:70:63:24:b5:73:cf:93:6b:ae:8f:36:87:5e:bc:9c"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
       - run:
           name: prevent checking environment
           command: |
