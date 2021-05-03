@@ -3,8 +3,8 @@
   become: true
   apt:
     name: ["nodejs", "npm", "tar"]
-    global: yes
-    production: yes
+    # global: yes
+    # production: yes
     state: latest
     update_cache: yes
 
@@ -12,8 +12,8 @@
   become: true
   npm:
     name: pm2
-    global: yes
-    production: yes
+    # global: yes
+    # production: yes
     state: present
 
 - name: "Make backend dir"
