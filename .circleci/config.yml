@@ -10,9 +10,9 @@ commands:
           name: Delete all files in the current S3 bucket
           command: |
             if 
-              aws s3api head-bucket --bucket udapeople-test-s3bucket-${CIRCLE_WORKFLOW_ID}
+              aws s3api head-bucket --bucket udapeople-test2-s3bucket-${CIRCLE_WORKFLOW_ID}
             then
-              aws s3 rm s3://udapeople-test-s3bucket-${CIRCLE_WORKFLOW_ID}/ --recursive
+              aws s3 rm s3://udapeople-test2-s3bucket-${CIRCLE_WORKFLOW_ID}/ --recursive
             fi
           when: on_fail
       - run:
