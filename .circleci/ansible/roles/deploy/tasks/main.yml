@@ -12,9 +12,12 @@
 - name: "install all dependencies."
   become: true
   apt:
-    name: ["nodejs", "npm", "tar"]
-    state: latest
-    # update_cache: yes
+    name: 
+    - nodejs
+    - npm
+    - tar
+    state: present
+    update_cache: true
 
 - name: "install pm2"
   become: true
