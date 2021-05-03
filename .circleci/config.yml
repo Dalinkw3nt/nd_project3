@@ -395,7 +395,12 @@ jobs:
       - run:
           name: Install tar
           command: |
-            yum -y install tar gzip
+            apk add --no-cache curl
+            apk add --no-cache --upgrade bash
+            apk add --no-cache --update ansible
+            apk add --no-cache openssh-client
+            apk add --update tar gzip
+            pip3 install awscli
       - run:
           name: Configure server
           working_directory: .circleci/ansible
