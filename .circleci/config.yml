@@ -363,6 +363,14 @@ jobs:
             apk add --no-cache openssh-client
             apk add --update tar gzip
             pip3 install awscli
+      - add_ssh_keys:
+          fingerprints: ["68:70:63:24:b5:73:cf:93:6b:ae:8f:36:87:5e:bc:9c"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
+      -attach_workspace:
+        at: ~/
+      - run:
+          name: prevent checking environment
+          command: |
+            export ANSIBLE_HOST_KEY_CHECKING=False
       - run:
           name: Get the public DNS of EC2 instance from https://memstash.io/
           command: |
@@ -374,12 +382,8 @@ jobs:
             echo ${PUBLIC_DNS} > ./inventory.txt
             cat ./inventory.txt
 
-      - add_ssh_keys:
-          fingerprints: ["68:70:63:24:b5:73:cf:93:6b:ae:8f:36:87:5e:bc:9c"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
-      - run:
-          name: prevent checking environment
-          command: |
-            export ANSIBLE_HOST_KEY_CHECKING=False
+
+
       
       - run:
           name: Configure server via ansible to deploy the backend
