@@ -365,8 +365,8 @@ jobs:
             pip3 install awscli
       - add_ssh_keys:
           fingerprints: ["68:70:63:24:b5:73:cf:93:6b:ae:8f:36:87:5e:bc:9c"] # get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
-      -attach_workspace:
-        at: ~/
+      - attach_workspace:
+          at: ~/
       - run:
           name: prevent checking environment
           command: |
