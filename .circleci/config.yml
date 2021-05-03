@@ -247,15 +247,15 @@ jobs:
           name: Install tar
           command: |
             yum -y install tar gzip
-      # - run:
-      #     name: Delete all S3 buckets whose names start with 'udapeople-test-s3bucket-'
-      #     command: |
-      #       OLD_BUCKET=$(aws s3api list-buckets --query "Buckets[?starts_with(Name, 'udapeople-test-s3bucket-')].Name" --output text)
-      #       for bucket in ${OLD_BUCKET}
-      #       do  
-      #           echo deleting bucket $bucket
-      #           aws s3 rb --force s3://$bucket
-      #       done
+      - run:
+          name: Delete all S3 buckets whose names start with 'udapeople-test-s3bucket-'
+          command: |
+            OLD_BUCKET=$(aws s3api list-buckets --query "Buckets[?starts_with(Name, 'udapeople-test-s3bucket-')].Name" --output text)
+            for bucket in ${OLD_BUCKET}
+            do  
+                echo deleting bucket $bucket
+                aws s3 rb --force s3://$bucket
+            done
       - run:
           name: Create/Update frontend infrastructure via AWS CloudFormation
           working_directory: .circleci/files
@@ -343,10 +343,10 @@ jobs:
             fi
               echo "WorkflowID=${CIRCLE_WORKFLOW_ID:0:7}"
 
-    #  # Here's where you will add some code to rollback on failure      
-    #   - destroy_environment:
-    #       id: ${CIRCLE_WORKFLOW_ID:0:7}
-    #       when: on_fail
+     # Here's where you will add some code to rollback on failure      
+      - destroy_environment:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          when: on_fail
 
   deploy-backend:
     docker:

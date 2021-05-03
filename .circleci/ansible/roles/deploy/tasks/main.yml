@@ -11,8 +11,6 @@
     
 - name: "install all dependencies."
   become: true
-  args:
-    chdir: /home/ec2-user/backend
   apt:
     name: ["nodejs", "npm", "tar"]
     state: latest
