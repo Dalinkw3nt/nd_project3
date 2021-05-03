@@ -3,7 +3,7 @@
   become: yes 
   become_method: enable
   file:
-    path: /home/ubuntu/backend/
+    path: /home/ec2-user/backend/
     state: directory
     mode: "0755"
     recurse: yes
@@ -12,7 +12,7 @@
 - name: "install all dependencies."
   become: true
   args:
-    chdir: /home/ubuntu/backend
+    chdir: /home/ec2-user/backend
   apt:
     name: ["nodejs", "npm", "tar"]
     state: latest
@@ -32,18 +32,18 @@
   become: true
   copy:
     src: backend_artifact.tar.gz
-    dest: /home/ubuntu/backend/backend_artifact.tar.gz
+    dest: /home/ec2-user/backend/backend_artifact.tar.gz
 
 - name: Unpack dist files and start the app
   become: true
   shell: |
-    cd /home/ubuntu/backend
+    cd /home/ec2-user/backend
     tar -xzf backend_artifact.tar.gz
     rm backend_artifact.tar.gz
 - name: Build backend and prestart:prod
   become: true
   shell: |
-    cd /home/ubuntu/backend
+    cd /home/ec2-user/backend
     npm run build
     npm run prestart:prod
 # - name: Stop old backend process
@@ -55,6 +55,6 @@
 - name: Start the app backend
   become: true
   shell: |
-    cd /home/ubuntu/backend
+    cd /home/ec2-user/backend
     pm2 start npm --name backend -- run start
     pm2 ls
