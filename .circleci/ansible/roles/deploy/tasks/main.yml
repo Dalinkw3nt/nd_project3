@@ -1,12 +1,12 @@
 ---
-- name: "install dependencies."
-  become: true
-  apt:
-    name: ["nodejs", "npm", "tar"]
-    global: yes
-    # production: yes
-    state: latest
-    update_cache: yes
+# - name: "install dependencies."
+#   become: true
+#   apt:
+#     name: nodejs
+#     global: yes
+#     # production: yes
+#     state: present
+#     update_cache: yes
 
 - name: "install pm2"
   become: true
