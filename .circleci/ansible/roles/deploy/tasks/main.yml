@@ -1,8 +1,11 @@
 ---
 - name: "Make backend dir"
   become_method: enable
-  shell: |
-    mkdir /home/ubuntu/backend/
+  file:
+    path: /home/ubuntu/backend
+    state: directory  
+    recurse: yes
+    
     
 - name: "install all dependencies."
   become: true
