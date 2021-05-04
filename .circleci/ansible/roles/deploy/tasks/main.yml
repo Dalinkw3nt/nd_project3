@@ -9,12 +9,7 @@
     src: /root/project/backend
     dest: /home/ec2-user
 
-- name: Uncompress Backend
-  become: yes
-  unarchive:
-    src: /root/backend.tar.gz
-    dest: /home/ec2-user/backend
-    
+  
 - name: Executing node
   become: yes
   shell: |
