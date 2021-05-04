@@ -1,5 +1,4 @@
 ---
-
 - name: "configuration play." 
   hosts: all
   user: ec2-user
