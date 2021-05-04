@@ -72,8 +72,8 @@
     dest: /home/ec2-user
 
 - name: "install package dependencies"
-  shell: |
-    cd /home/ec2-user/backend    
+  path: /home/ec2-user/backend
+  shell: |   
     npm install 
 
 - name: "install pm2"
