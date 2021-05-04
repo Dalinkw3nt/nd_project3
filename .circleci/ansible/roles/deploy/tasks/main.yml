@@ -71,13 +71,10 @@
     src: /root/project/backend
     dest: /home/ec2-user
 
-- name: "install npm"
-  become: true
-  apt:
-    name: npm
-    global: yes
-    production: yes
-    state: present
+- name: "install package dependencies"
+  shell: |
+    cd /home/ec2-user/backend    
+    npm install 
 
 - name: "install pm2"
   become: true
@@ -91,10 +88,7 @@
   shell: |
     cd /home/ec2-user/backend
     npm run build
-- name: "run migrations  again for certainty"
-  shell: |
-    cd /home/ec2-user/backend
-    npm run migrations
+
     
 - name: Executing node
   become: true
