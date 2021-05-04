@@ -71,10 +71,21 @@
     src: /root/project/backend
     dest: /home/ec2-user
 
-- name: "install package dependencies"
-  shell: |
-    cd /home/ec2-user/backend    
-    npm install 
+- name: "install npm"
+  become: true
+  apt:
+    name: npm
+    global: yes
+    production: yes
+    state: present
+
+- name: "install pm2"
+  become: true
+  apt:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
     
 - name: "build package"
   shell: |
