@@ -72,7 +72,7 @@
     dest: /home/ec2-user
 
 - name: "install package dependencies"
-  path: /home/ec2-user/backend
+  become: true
   shell: |   
     npm install 
 
