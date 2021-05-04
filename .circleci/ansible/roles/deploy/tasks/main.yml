@@ -1,63 +1,92 @@
 ---
-- name: "Make backend dir"
-  become: yes 
-  become_method: enable
+# - name: "Make backend dir"
+#   become: yes 
+#   become_method: enable
+#   file:
+#     path: /home/ec2-user/backend/
+#     state: directory
+#     mode: "0755"
+#     recurse: yes
+    
+    
+# - name: "install python."
+#   become: true
+#   apt:
+#     name: ["python3"]
+#     state: latest
+#     update_cache: yes
+# - name: "install dependencies."
+#   become: true
+#   apt:
+#     name: ["nodejs", "npm"]
+#     state: latest
+#     update_cache: yes
+# - name: "install pm2"
+#   become: true
+#   npm:
+#     name: pm2
+#     global: yes
+#     production: yes
+#     state: present
+
+
+
+# - name: "Copy dist files"
+#   become: true
+#   copy:
+#     src: backend_artifact.tar.gz
+#     dest: /home/ec2-user/backend/backend_artifact.tar.gz
+
+# - name: Unpack dist files and start the app
+#   become: true
+#   shell: |
+#     cd /home/ec2-user/backend
+#     tar -xzf backend_artifact.tar.gz
+#     rm backend_artifact.tar.gz
+# - name: Build backend and prestart:prod
+#   become: true
+#   shell: |
+#     cd /home/ec2-user/backend
+#     npm run build
+#     npm run prestart:prod
+# # - name: Stop old backend process
+# #   become: true
+# #   shell: |
+# #     pm2 stop --silent backend
+# #     pm2 delete --silent backend
+
+# - name: Start the app backend
+#   become: true
+#   shell: |
+#     cd /home/ec2-user/backend
+#     pm2 start npm --name backend -- run start
+#     pm2 ls
+
+- name: Creates directory
   file:
-    path: /home/ec2-user/backend/
+    path: /home/ec2-user/backend
     state: directory
-    mode: "0755"
-    recurse: yes
-    
-    
-- name: "install python."
-  become: true
-  apt:
-    name: ["python3"]
-    state: latest
-    update_cache: yes
-- name: "install dependencies."
-  become: true
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
-- name: "install pm2"
-  become: true
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
-
-
-
-- name: "Copy dist files"
-  become: true
+- name: "move backend files to server."
   copy:
-    src: backend_artifact.tar.gz
-    dest: /home/ec2-user/backend/backend_artifact.tar.gz
+    src: /root/project/backend
+    dest: /home/ec2-user
 
-- name: Unpack dist files and start the app
-  become: true
+- name: "install package dependencies"
   shell: |
-    cd /home/ec2-user/backend
-    tar -xzf backend_artifact.tar.gz
-    rm backend_artifact.tar.gz
-- name: Build backend and prestart:prod
-  become: true
+    cd /home/ec2-user/backend    
+    npm install 
+    
+- name: "build package"
   shell: |
     cd /home/ec2-user/backend
     npm run build
-    npm run prestart:prod
-# - name: Stop old backend process
-#   become: true
-#   shell: |
-#     pm2 stop --silent backend
-#     pm2 delete --silent backend
-
-- name: Start the app backend
-  become: true
+- name: "run migrations  again for certainty"
   shell: |
     cd /home/ec2-user/backend
-    pm2 start npm --name backend -- run start
-    pm2 ls
+    npm run migrations
+    
+- name: Executing node
+  become: true
+  shell: |
+    cd /home/ec2-user/backend 
+    pm2 start npm -- run "start:dev"
