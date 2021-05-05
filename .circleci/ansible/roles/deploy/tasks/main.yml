@@ -63,6 +63,7 @@
     update_cache: yes
 
 - name: install NPM
+  apt:  
     name: npm
     become: yes
     args:
