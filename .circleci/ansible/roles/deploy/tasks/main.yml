@@ -8,8 +8,7 @@
   copy:
     src: /root/project/backend
     dest: /home/ec2-user
-
----
+    
 - name: "update apt packages."
   become: yes
   apt:
