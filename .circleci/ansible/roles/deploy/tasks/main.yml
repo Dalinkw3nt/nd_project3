@@ -56,12 +56,17 @@
     update_cache: yes
 
 - name: install nodejs
-  apt: name=nodejs
+  apt: 
+    name: nodejs
+    become: yes
+    state: latest
+    update_cache: yes
 
 - name: install NPM
-    shell: npm i
+    become: yes
+    shell: npm
     args:
-      chdir: /home/ubuntu
+      path: /home/ubuntu
 
 - name: Install PM2
   npm:
