@@ -63,8 +63,8 @@
     update_cache: yes
 
 - name: install NPM
+    name: npm
     become: yes
-    shell: npm
     args:
       path: /home/ubuntu
 
