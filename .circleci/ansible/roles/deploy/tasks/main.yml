@@ -7,8 +7,8 @@
 - name: "move backend files to server."
   copy:
     src: /root/project/backend
-    dest: /home/ec2-user
-    
+    dest: /home/ec2-user/backend
+
 - name: "update apt packages."
   become: yes
   apt:
