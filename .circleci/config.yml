@@ -267,7 +267,7 @@ jobs:
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"
             ARN=$(aws s3 ls | grep udapeople)
             echo "ARN=$ARN"
-            echo ${ARN} > ./inventory.txt  
+            echo ${ARN} > .circleci/ansible/inventory.txt  
       - run:
           name: Create/Update backend infrastructure via AWS CloudFormation
           working_directory: .circleci/files
@@ -386,9 +386,9 @@ jobs:
             --filters "Name=tag:Name,Values=test-backend-${CIRCLE_WORKFLOW_ID}" --query 'Reservations[*].Instances[*].PublicDnsName' --output text)
             echo ${PUBLIC_DNS}
             cd .circleci/ansible/
-            echo "[all]" > ./inventory.txt
-            echo ${PUBLIC_DNS} > ./inventory.txt
-            cat ./inventory.txt
+            echo "[all]" > .circleci/ansible/inventory.txt
+            echo ${PUBLIC_DNS} > .circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
 
 
 
@@ -415,7 +415,7 @@ jobs:
           command: |
             pwd &&
             ls -la
-            cat inventory.txt
+            cat .circleci/ansible/inventory.txt
             # tar -C backend -czvf artifact.tar.gz .
             # cd .circleci/ansible
             # ansible-playbook -i inventory.txt deploy-backend.yml --ask-become-pass
